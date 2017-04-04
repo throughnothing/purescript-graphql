@@ -1,8 +1,11 @@
+{-
+Parser based off the GraphQL Spec:
+https://facebook.github.io/graphql/#EnumValue
+Heavily influenced by graphql-haskell:
+https://github.com/jdnavarro/graphql-haskell/blob/master/Data/GraphQL/AST.hs
+-}
 module GraphQL.Language.AST where
 
-import Data.Foldable (fold)
-import Data.Function (($))
-import Data.Generic (class Generic, gShow)
 import Data.List.Types (List)
 import Data.Maybe (Maybe)
 import Data.NonEmpty (NonEmpty)
@@ -17,28 +20,14 @@ data Definition
   = DefinitionOperation OperationDefinition
   | DefinitionFragment FragmentDefinition
 
-instance showDefinition :: Show Definition where
-  show (DefinitionOperation o) = show o
-  show (DefinitionFragment f) = show f
-
 data OperationDefinition
   = OperationSelectionSet SelectionSet
   | OperationDefinition OperationType (Maybe Name) VariableDefinitions Directives SelectionSet
 
-instance showOperationDefinition :: Show OperationDefinition where
-  show (OperationSelectionSet s) = show s
-  show (OperationDefinition o mn v d s) = "OperationDefinition"
-                                       <> (show o) <> " "
-                                       <> (show mn) <> " "
-                                       <> (show d) <> (show s)
-
 data OperationType = Query | Mutation
 
-instance showOperationType :: Show OperationType where
-  show Query = "Query"
-  show Mutation = "Mutation"
+-- | SelectionSet
 
--- * SelectionSet
 type SelectionSet = NonEmpty List Selection
 
 type SelectionSetOpt = List Selection
@@ -48,63 +37,31 @@ data Selection
   | SelectionFragmentSpread FragmentSpread
   | SelectionInlineFragment InlineFragment
 
-instance showSelection :: Show Selection where
-  show (SelectionField f) = show f
-  show (SelectionFragmentSpread f) = show f
-  show (SelectionInlineFragment i) = show i
-
--- * Field
+-- | Field
 
 data Field = Field (Maybe Alias) Name Arguments Directives SelectionSetOpt
 
-instance showField :: Show Field where
-  show (Field ma n a d s) = "Field "
-                         <> (show ma) <> " "
-                         <> (show n) <> " "
-                         <> (show d) <> " "
-                         <> (show s)
-
 type Alias = Name
 
--- * Arguments
+-- | Arguments
 
 type Arguments = List Argument
 
 data Argument = Argument Name Value
 
-instance showArgument :: Show Argument where
-  show (Argument n v) = (show n) <> ":" <> (show v)
+-- | Fragments
 
--- * Fragments
 data FragmentSpread = FragmentSpread Name Directives
-
-instance showFragmentSpread :: Show FragmentSpread where
-  show (FragmentSpread n d) = "FragmentSPread("
-                           <> (show n) <> " "
-                           <> (show d) <> ")"
 
 data InlineFragment = InlineFragment (Maybe TypeCondition) Directives SelectionSet
 
-instance showInlineFragment :: Show InlineFragment where
-  show (InlineFragment mt d s) = "InlineFragment("
-                           <> (show mt) <> " "
-                           <> (show d) <> " "
-                           <> (show s) <> ")"
-
 data FragmentDefinition = FragmentDefinition FragmentName TypeCondition Directives SelectionSet
-
-instance showFragmentDefinition :: Show FragmentDefinition where
-  show (FragmentDefinition f t d s) = "FragmentDefinition("
-                                   <> (show f) <> " "
-                                   <> (show t) <> " "
-                                   <> (show d) <> " "
-                                   <> (show s) <> ")"
 
 type FragmentName = Name
 
 type TypeCondition = Name
 
--- Input Values
+-- | Input Values
 
 data Value
   = ValueVariable Variable
@@ -116,18 +73,6 @@ data Value
   | ValueEnum EnumValue
   | ValueList ListValue
   | ValueObject ObjectValue
-
-instance showValue :: Show Value where
-  show (ValueVariable v) = show v
-  show (ValueInt i) = show i
-  show (ValueFloat f) = show f
-  show (ValueString s) = show s
-  show (ValueBoolean b) = show b
-  show ValueNull = show "null"
-  show (ValueEnum e) = show e
-  show (ValueList l) = show l
-  show (ValueObject o) = show o
-
 
 type IntValue = Int
 
@@ -145,10 +90,7 @@ type ObjectValue = List ObjectField
 
 data ObjectField = ObjectField Name Value
 
-instance showObjectField :: Show ObjectField where
-  show (ObjectField n v) = (show n) <> ":" <> (show v)
-
--- * Variables
+-- | Variables
 
 type VariableDefinitions = List VariableDefinition
 
@@ -158,7 +100,7 @@ type Variable = Name
 
 type DefaultValue = Value
 
--- * Input Types
+-- | Input Types
 
 data InputType
   = TypeNamed   Name
@@ -169,12 +111,93 @@ data NonNullType
   = NonNullTypeNamed Name
   | NonNullTypeList  InputType
 
--- * Directives
+-- | Directives
+
 type Directives = List Directive
 data Directive = Directive Name (List Argument)
+
+
+-- | Instances
+
+instance showOperationDefinition :: Show OperationDefinition where
+  show (OperationSelectionSet s) = show s
+  show (OperationDefinition o mn v d s) = "OperationDefinition"
+                                       <> (show o) <> " "
+                                       <> (show mn) <> " "
+                                       <> (show d) <> (show s)
+
+instance showDefinition :: Show Definition where
+  show (DefinitionOperation o) = show o
+  show (DefinitionFragment f) = show f
+
+
+instance showInlineFragment :: Show InlineFragment where
+  show (InlineFragment mt d s) = "InlineFragment("
+                           <> (show mt) <> " "
+                           <> (show d) <> " "
+                           <> (show s) <> ")"
+
+
+instance showFragmentSpread :: Show FragmentSpread where
+  show (FragmentSpread n d) = "FragmentSPread("
+                           <> (show n) <> " "
+                           <> (show d) <> ")"
+
+instance showSelection :: Show Selection where
+  show (SelectionField f) = show f
+  show (SelectionFragmentSpread f) = show f
+  show (SelectionInlineFragment i) = show i
+
+instance showFragmentDefinition :: Show FragmentDefinition where
+  show (FragmentDefinition f t d s) = "FragmentDefinition("
+                                   <> (show f) <> " "
+                                   <> (show t) <> " "
+                                   <> (show d) <> " "
+                                   <> (show s) <> ")"
+
+instance showField :: Show Field where
+  show (Field ma n a d s) = "Field "
+                         <> (show ma) <> " "
+                         <> (show n) <> " "
+                         <> (show a) <> " "
+                         <> (show d) <> " "
+                         <> (show s)
+
+
+instance showArgument :: Show Argument where
+  show (Argument n v) = "(" <> (show n) <> " => " <> (show v) <> ")"
+
+instance showOperationType :: Show OperationType where
+  show Query = "Query"
+  show Mutation = "Mutation"
+
+instance showValue :: Show Value where
+  show (ValueVariable v) = show v
+  show (ValueInt i) = show i
+  show (ValueFloat f) = show f
+  show (ValueString s) = show s
+  show (ValueBoolean b) = show b
+  show ValueNull = show "null"
+  show (ValueEnum e) = show e
+  show (ValueList l) = show l
+  show (ValueObject o) = show o
+
+instance showObjectField :: Show ObjectField where
+  show (ObjectField n v) = (show n) <> ":" <> (show v)
+
+instance showVariableDefinition :: Show VariableDefinition where
+  show (VariableDefinition v i md) = "VariableDefinition(" <> (show v) <> (show i) <> (show md) <> ")"
+
+instance showInputType :: Show InputType where
+  show (TypeNamed n) = "TypedName(" <> (show n) <> ")"
+  show (TypeList i) = "TypeList(" <> (show i) <> ")"
+  show (TypeNonNull t) = "TypeNonNull(" <> (show t) <> ")"
+
+instance showNonNullType :: Show NonNullType where
+  show (NonNullTypeNamed n) = "NonNullTypedName(" <> (show n) <> ")"
+  show (NonNullTypeList n) = "NonNullTypedList(" <> (show n) <> ")"
 
 instance showDirective :: Show Directive where
   show (Directive n l) = "Directive("
                       <> (show n) <> " "
                       <> (show l) <> ")"
-
