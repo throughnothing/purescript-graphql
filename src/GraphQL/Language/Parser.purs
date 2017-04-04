@@ -26,33 +26,28 @@ module GraphQL.Language.Parser
   , variableDefinition
   , variableDefinitions
   , operationDefinition
-  )where
+  ) where
 
 import GraphQL.Language.AST as GA
-import GraphQL.Types as GT
 import Text.Parsing.StringParser.Combinators as SC
 import Text.Parsing.StringParser.String as S
-import Control.Alternative (class Alternative, empty, (<|>))
+import Control.Alternative (empty, (<|>))
 import Control.Applicative ((*>))
 import Control.Apply ((<$), (<$>), (<*>))
 import Control.Bind ((<*))
-import Control.Category (id)
 import Control.Lazy (defer)
-import Control.Monad (pure, void)
 import Data.BooleanAlgebra ((||))
-import Data.Either (Either(..))
 import Data.Eq ((==))
 import Data.Int (floor)
 import Data.List.Lazy (foldMap)
-import Data.List.Types (List(..))
-import Data.Monoid (class Monoid, append, mempty)
+import Data.List.Types (List)
+import Data.Monoid (class Monoid, mempty)
 import Data.NonEmpty ((:|), NonEmpty)
 import Data.String (singleton)
-import Data.Traversable (foldl, foldr, fold)
 import Data.Unit (Unit)
 import Global (readFloat, readInt)
-import Prelude (bind, map, unit, ($), (<<<), (<>), (>>=))
-import Text.Parsing.StringParser (Parser, fail, try)
+import Prelude (bind, map, unit, ($), (>>=), pure)
+import Text.Parsing.StringParser (Parser, try)
 import Text.Parsing.StringParser.Combinators ((<?>))
 
 -- | Parse a GraphQL `name`, which is `/[_A-Za-z][_0-9A-Za-z]*/`
@@ -232,7 +227,7 @@ objectField = GA.ObjectField <$> name <* tok ":" <*> (defer \_ -> value)
 -- | Internal
 
 parserCharToStr :: Parser (List Char) -> Parser String
-parserCharToStr c = map (fold <<< map singleton) c
+parserCharToStr c = map (foldMap singleton) c
 
 tok :: String -> Parser String
 tok s = whiteSpace *> (S.string s) <* whiteSpace
