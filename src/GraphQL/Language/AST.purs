@@ -1,9 +1,3 @@
-{-
-Parser based off the GraphQL Spec:
-https://facebook.github.io/graphql/#EnumValue
-Heavily influenced by graphql-haskell:
-https://github.com/jdnavarro/graphql-haskell/blob/master/Data/GraphQL/AST.hs
--}
 module GraphQL.Language.AST where
 
 import Data.Generic (class Generic, gShow)

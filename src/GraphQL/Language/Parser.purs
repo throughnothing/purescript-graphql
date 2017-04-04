@@ -1,9 +1,3 @@
-{-
-Parser based off the GraphQL Spec:
-https://facebook.github.io/graphql/#EnumValue
-Heavily influenced by graphql-haskell:
-https://github.com/jdnavarro/graphql-haskell/blob/master/Data/GraphQL/Parser.hs
--}
 module GraphQL.Language.Parser
   ( operationType
   , but
@@ -78,7 +72,7 @@ operationDefinition = GA.OperationSelectionSet <$> selectionSet
                                                <*> selectionSet
                   <?> "operationDefinition error"
 
--- * SelectionSet
+-- | SelectionSet
 
 selectionSet :: Parser GA.SelectionSet
 selectionSet = braces $ manyNE $ wrapWhitespace (defer \_ -> selection)
@@ -92,7 +86,7 @@ selection = GA.SelectionField          <$> wrapWhitespace (defer \_ -> field)
        <<|> GA.SelectionInlineFragment <$> wrapWhitespace (defer \_ -> inlineFragment)
         <?> "selection error!"
 
--- * Field
+-- | Field
 
 field :: Parser GA.Field
 field = GA.Field <$> SC.optionMaybe (try alias)
@@ -105,7 +99,7 @@ alias :: Parser GA.Alias
 alias = name <* tok ":"
 
 
--- * Variables
+-- | Variables
 
 variableDefinitions :: Parser GA.VariableDefinitions
 variableDefinitions = parens $ SC.many1 $ wrapWhitespace variableDefinition
@@ -122,7 +116,7 @@ variable = tok "$" *> name
 defaultValue :: Parser GA.DefaultValue
 defaultValue = tok "=" *> value
 
--- * Input Types
+-- | Input Types
 
 type_ :: Parser GA.InputType
 type_ = GA.TypeNamed   <$> name <* but (S.string "!")
@@ -135,7 +129,7 @@ nonNullType = GA.NonNullTypeNamed <$> name <* tok "!"
          <<|> GA.NonNullTypeList  <$> brackets (defer \_ -> type_)  <* tok "!"
           <?> "nonNullType error!"
 
--- * Directives
+-- | Directives
 
 directives :: Parser GA.Directives
 directives = SC.many directive
@@ -154,7 +148,7 @@ arguments = parens $ SC.many1 $ wrapWhitespace argument
 argument :: Parser GA.Argument
 argument = GA.Argument <$> name <* tok ":" <*> value
 
--- * Fragments
+-- | Fragments
 
 fragmentSpread :: Parser GA.FragmentSpread
 fragmentSpread = GA.FragmentSpread <$  tok "..."

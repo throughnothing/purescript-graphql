@@ -1,7 +1,11 @@
 # purescript-graphql
 
-A graphQL library written in purescript
+A graphQL library written in purescript.
 
+It is based off the Facebook [GraphQL Spec](https://facebook.github.io/graphql/#EnumValue)
+and heavily influenced by  the
+[graphql-haskell](https://github.com/jdnavarro/graphql-haskell/blob/master/Data/GraphQL/AST.hs)
+implementation.
 
 ## Getting Started
 
