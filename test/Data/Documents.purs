@@ -1,4 +1,4 @@
-module Test.Documents where
+module Test.Data.Documents where
 
 operationTypeQuery :: String
 operationTypeQuery = "query,"
