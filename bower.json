@@ -20,13 +20,11 @@
     "purescript-either": "2.2.1",
     "purescript-globals": "2.0.0",
     "purescript-integers": "2.1.0",
-    "purescript-generics": "3.0.0"
+    "purescript-generics": "3.0.0",
+    "purescript-aff": "2.0.3"
   },
   "devDependencies": {
     "purescript-psci-support": "^2.0.0",
     "purescript-spec": "^0.12.4"
-  },
-  "resolutions": {
-    "purescript-arrays": "^3.0.0"
   }
 }

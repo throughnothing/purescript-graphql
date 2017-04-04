@@ -2,56 +2,62 @@ module Test.Main where
 
 import Prelude
 import GraphQL.Language.Parser as P
-import Text.Parsing.StringParser.String as S
-import Control.Monad.Eff (Eff)
-import Control.Monad.Eff.Console (log, CONSOLE)
-import Data.Tuple (Tuple(..))
-import Text.Parsing.StringParser (runParser)
-
 import Test.Documents as D
+import Control.Monad.Aff (Aff)
+import Control.Monad.Eff (Eff)
+import Data.Either (isRight)
+import Data.Tuple (Tuple(..))
+import Test.Spec (describe, it)
+import Test.Spec.Assertions (shouldEqual)
+import Test.Spec.Reporter.Console (consoleReporter)
+import Test.Spec.Runner (RunnerEffects, run)
+import Text.Parsing.StringParser (runParser, Parser)
 
-main :: ∀ e. Eff (console :: CONSOLE | e) Unit
-main = do
-  log $ show $ runParser ((P.name <* P.but (S.string "!")) `P.tryAlt` S.string "te") "test!"
+canParse :: forall a e. Parser a -> String -> Aff ( | e) Unit
+canParse p input = shouldEqual (isRight $ runParser p input) true
 
-  log "selection:"
-  log $ show $ runParser P.selection D.selection
+main :: Eff (RunnerEffects ()) Unit
+main = run [consoleReporter] do
+  describe "Selections" do
+    it "parses selection" do canParse P.selection D.selection
+    it "parses selectionSet" do canParse P.selectionSet D.selectionSet
 
-  log "selectionSet:"
-  log $ show $ runParser P.selectionSet D.selectionSet
+  describe "Fields" do
+    it "parses fields" do
+      canParse P.field D.fieldWithAlias
+      canParse P.field D.field1
+      canParse P.field D.field2
+      canParse P.field D.field3
+      canParse P.field D.field4
 
-  log "field:"
-  log $ show $ runParser P.field D.fieldWithAlias
-  log $ show $ runParser P.field D.field1
-  log $ show $ runParser P.field D.field2
-  log $ show $ runParser P.field D.field3
-  log $ show $ runParser P.field D.field4
+  describe "Arguments" do
+    it "parses arguments" do
+      canParse P.arguments D.arguments1
+      canParse P.arguments D.arguments2
+      canParse ((\s a -> Tuple s a) <$> P.name <*> P.arguments) D.nameArguments
+      canParse P.argument D.argument
 
-  log "arguments:"
-  log $ show $ runParser P.arguments D.arguments1
-  log $ show $ runParser P.arguments D.arguments2
-  log $ show $ runParser ((\s a -> Tuple s a) <$> P.name <*> P.arguments) D.nameArguments
+  describe "OperationType" do
+    it "parses operationType" do
+      canParse P.operationType D.operationTypeQuery
+      canParse P.operationType D.operationTypeMutation
 
-  log "argument:"
-  log $ show $ runParser P.argument D.argument
+  describe "VariableDefinition" do
+    it "parses variableDefinition" do
+      canParse P.variableDefinition D.variableDefinition
+      canParse P.variableDefinitions D.variableDefinitions
 
-  log "operationType:"
-  log $ show $ runParser P.operationType D.operationTypeQuery
-  log $ show $ runParser P.operationType D.operationTypeMutation
+  describe "OperationDefinition" do
+    it "parses operationDefinition" do
+      canParse P.operationDefinition D.operationDefinition
 
-  log "variableDefinition:"
-  log $ show $ runParser P.variableDefinition D.variableDefinition
-
-  log "variableDefinitions:"
-  log $ show $ runParser P.variableDefinitions D.variableDefinitions
-
-  log "operationDefinition:"
-  log $ show $ runParser P.operationDefinition D.operationDefinition
-
-  log "document:"
-  log $ show $ runParser P.document D.swsimple
-  log $ show $ runParser P.document D.swSimple2
-  log $ show $ runParser P.document D.kitchenSinkNoComments
-  log $ show $ runParser P.document D.kitchenSink
+  describe "Document" do
+    it "parses swsimple" do
+      canParse P.document D.swsimple
+      canParse P.document D.swSimple2
+    it "parses KitchenSink with no commetns" do
+      canParse P.document D.kitchenSinkNoComments
+    it "parses full KitchenSink example" do
+      canParse P.document D.kitchenSink
 
 
