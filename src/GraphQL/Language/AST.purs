@@ -6,11 +6,11 @@ https://github.com/jdnavarro/graphql-haskell/blob/master/Data/GraphQL/AST.hs
 -}
 module GraphQL.Language.AST where
 
+import Data.Generic (class Generic, gShow)
 import Data.List.Types (List)
 import Data.Maybe (Maybe)
 import Data.NonEmpty (NonEmpty)
 import Data.Show (class Show)
-import Prelude (show, (<>))
 
 type Name = String
 
@@ -119,85 +119,47 @@ data Directive = Directive Name (List Argument)
 
 -- | Instances
 
-instance showOperationDefinition :: Show OperationDefinition where
-  show (OperationSelectionSet s) = show s
-  show (OperationDefinition o mn v d s) = "OperationDefinition"
-                                       <> (show o) <> " "
-                                       <> (show mn) <> " "
-                                       <> (show d) <> (show s)
+derive instance genericDefinition :: Generic Definition
+instance showDefinition :: Show Definition where show = gShow
 
-instance showDefinition :: Show Definition where
-  show (DefinitionOperation o) = show o
-  show (DefinitionFragment f) = show f
+derive instance genericFragmentDefinition :: Generic FragmentDefinition
+instance showFragmentDefinition :: Show FragmentDefinition where show = gShow
 
+derive instance genericOperationDefinition :: Generic OperationDefinition
+instance showperationDefinition :: Show OperationDefinition where show = gShow
 
-instance showInlineFragment :: Show InlineFragment where
-  show (InlineFragment mt d s) = "InlineFragment("
-                           <> (show mt) <> " "
-                           <> (show d) <> " "
-                           <> (show s) <> ")"
+derive instance genericSelection :: Generic Selection
+instance showSelection :: Show Selection where show = gShow
 
+derive instance genericField :: Generic Field
+instance showField :: Show Field where show = gShow
 
-instance showFragmentSpread :: Show FragmentSpread where
-  show (FragmentSpread n d) = "FragmentSPread("
-                           <> (show n) <> " "
-                           <> (show d) <> ")"
+derive instance genericFragmentSPread :: Generic FragmentSpread
+instance showFragmentSPread :: Show FragmentSpread where show = gShow
 
-instance showSelection :: Show Selection where
-  show (SelectionField f) = show f
-  show (SelectionFragmentSpread f) = show f
-  show (SelectionInlineFragment i) = show i
+derive instance genericInlineFragment :: Generic InlineFragment
+instance showInlineFragment :: Show InlineFragment where show = gShow
 
-instance showFragmentDefinition :: Show FragmentDefinition where
-  show (FragmentDefinition f t d s) = "FragmentDefinition("
-                                   <> (show f) <> " "
-                                   <> (show t) <> " "
-                                   <> (show d) <> " "
-                                   <> (show s) <> ")"
+derive instance genericOperationType :: Generic OperationType
+instance showOperationType :: Show OperationType where show = gShow
 
-instance showField :: Show Field where
-  show (Field ma n a d s) = "Field "
-                         <> (show ma) <> " "
-                         <> (show n) <> " "
-                         <> (show a) <> " "
-                         <> (show d) <> " "
-                         <> (show s)
+derive instance genericVariableDefinition :: Generic VariableDefinition
+instance showVariableDefinition :: Show VariableDefinition where show = gShow
 
+derive instance genericInputType :: Generic InputType
+instance showInputType :: Show InputType where show = gShow
 
-instance showArgument :: Show Argument where
-  show (Argument n v) = "(" <> (show n) <> " => " <> (show v) <> ")"
+derive instance genericValue :: Generic Value
+instance showValue :: Show Value where show = gShow
 
-instance showOperationType :: Show OperationType where
-  show Query = "Query"
-  show Mutation = "Mutation"
+derive instance genericObjectField :: Generic ObjectField
+instance showObjectField :: Show ObjectField where show = gShow
 
-instance showValue :: Show Value where
-  show (ValueVariable v) = show v
-  show (ValueInt i) = show i
-  show (ValueFloat f) = show f
-  show (ValueString s) = show s
-  show (ValueBoolean b) = show b
-  show ValueNull = show "null"
-  show (ValueEnum e) = show e
-  show (ValueList l) = show l
-  show (ValueObject o) = show o
+derive instance genericDirective :: Generic Directive
+instance showDirective :: Show Directive where show = gShow
 
-instance showObjectField :: Show ObjectField where
-  show (ObjectField n v) = (show n) <> ":" <> (show v)
+derive instance genericNonNullType :: Generic NonNullType
+instance showNonNullType :: Show NonNullType where show = gShow
 
-instance showVariableDefinition :: Show VariableDefinition where
-  show (VariableDefinition v i md) = "VariableDefinition(" <> (show v) <> (show i) <> (show md) <> ")"
-
-instance showInputType :: Show InputType where
-  show (TypeNamed n) = "TypedName(" <> (show n) <> ")"
-  show (TypeList i) = "TypeList(" <> (show i) <> ")"
-  show (TypeNonNull t) = "TypeNonNull(" <> (show t) <> ")"
-
-instance showNonNullType :: Show NonNullType where
-  show (NonNullTypeNamed n) = "NonNullTypedName(" <> (show n) <> ")"
-  show (NonNullTypeList n) = "NonNullTypedList(" <> (show n) <> ")"
-
-instance showDirective :: Show Directive where
-  show (Directive n l) = "Directive("
-                      <> (show n) <> " "
-                      <> (show l) <> ")"
+derive instance genericArgument :: Generic Argument
+instance showArgument :: Show Argument where show = gShow
