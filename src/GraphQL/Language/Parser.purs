@@ -1,26 +1,4 @@
-module GraphQL.Language.Parser
-  ( operationType
-  , but
-  , document
-  , argument
-  , arguments
-  , name
-  , tok
-  , opt
-  , parens
-  , braces
-  , brackets
-  , quotes
-  , between
-  , whiteSpace
-  , selectionSet
-  , field
-  , selection
-  , tryAlt
-  , variableDefinition
-  , variableDefinitions
-  , operationDefinition
-  ) where
+module GraphQL.Language.Parser where
 
 import GraphQL.Language.AST as GA
 import Text.Parsing.StringParser.Combinators as SC
@@ -31,6 +9,7 @@ import Control.Apply ((<$), (<$>), (<*>))
 import Control.Bind ((<*))
 import Control.Lazy (defer)
 import Data.BooleanAlgebra ((||))
+import Data.Either (Either)
 import Data.Eq ((==))
 import Data.Int (floor)
 import Data.List.Lazy (foldMap)
@@ -40,9 +19,14 @@ import Data.NonEmpty ((:|), NonEmpty)
 import Data.String (singleton)
 import Data.Unit (Unit)
 import Global (readFloat, readInt)
+import GraphQL.Types (Query(..))
 import Prelude (bind, map, unit, ($), (>>=), pure)
-import Text.Parsing.StringParser (Parser, try)
+import Text.Parsing.StringParser (ParseError, Parser, runParser, try)
 import Text.Parsing.StringParser.Combinators ((<?>))
+
+
+parseDocument :: Query -> Either ParseError GA.Document
+parseDocument (Query q) = runParser document q
 
 -- | Parse a GraphQL `name`, which is `/[_A-Za-z][_0-9A-Za-z]*/`
 name :: Parser GA.Name
@@ -275,3 +259,4 @@ tryAlt :: ∀ a. Parser a -> Parser a -> Parser a
 tryAlt p q = try p <|> q
 
 infixl 3 tryAlt as <<|>
+

@@ -114,6 +114,9 @@ data Directive = Directive Name (List Argument)
 
 -- | Instances
 
+derive instance genericDocument :: Generic Document
+instance showDocument :: Show Document where show = gShow
+
 derive instance genericDefinition :: Generic Definition
 instance showDefinition :: Show Definition where show = gShow
 
