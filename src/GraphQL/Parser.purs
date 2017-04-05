@@ -1,4 +1,4 @@
-module GraphQL.Language.Parser where
+module GraphQL.Parser where
 
 import GraphQL.Language.AST as GA
 import Text.Parsing.StringParser.Combinators as SC

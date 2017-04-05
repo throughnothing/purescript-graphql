@@ -1,7 +1,7 @@
-module Test.GraphQL.Language.Parser where
+module Test.GraphQL.Parser where
 
 import Prelude
-import GraphQL.Language.Parser as P
+import GraphQL.Parser as P
 import Test.Data.Documents as D
 import Control.Monad.Aff (Aff)
 import Data.Either (isRight)
@@ -16,7 +16,7 @@ canParse p input = shouldEqual (isRight $ runParser p input) true
 
 parserSpec :: ∀ e. Spec (RunnerEffects e) Unit
 parserSpec = do
-  describe "GraphQL.Language.Parser" do
+  describe "GraphQL.Parser" do
     it "parses selection" do canParse P.selection D.selection
     it "parses selectionSet" do canParse P.selectionSet D.selectionSet
 

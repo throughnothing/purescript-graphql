@@ -3,7 +3,7 @@ module GraphQL where
 import Data.Either (either)
 import GraphQL.Errors (parseError)
 import GraphQL.Execution (execute)
-import GraphQL.Language.Parser (parseDocument)
+import GraphQL.Parser (parseDocument)
 import GraphQL.Types (Result, Query, Schema)
 import Prelude (class Monad)
 
