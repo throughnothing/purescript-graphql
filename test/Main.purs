@@ -5,7 +5,6 @@ import Control.Monad.Eff (Eff)
 import Test.GraphQL.Language.Parser (parserSpec)
 import Test.Spec.Reporter.Console (consoleReporter)
 import Test.Spec.Runner (RunnerEffects, run)
-import Text.Parsing.StringParser (runParser, Parser)
 
 main :: Eff (RunnerEffects ()) Unit
 main = run [consoleReporter] do

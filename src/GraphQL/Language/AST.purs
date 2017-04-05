@@ -6,9 +6,10 @@ import Data.Maybe (Maybe)
 import Data.NonEmpty (NonEmpty)
 import Data.Show (class Show)
 
+-- | TODO: Could this be a symbol?
 type Name = String
 
-type Document = NonEmpty List Definition
+data Document = Document (NonEmpty List Definition)
 
 data Definition
   = DefinitionOperation OperationDefinition
@@ -35,7 +36,7 @@ data Selection
 
 data Field = Field (Maybe Alias) Name Arguments Directives SelectionSetOpt
 
-type Alias = Name
+data Alias = Alias Name
 
 -- | Arguments
 
@@ -108,8 +109,8 @@ data NonNullType
 -- | Directives
 
 type Directives = List Directive
-data Directive = Directive Name (List Argument)
 
+data Directive = Directive Name (List Argument)
 
 -- | Instances
 
@@ -127,6 +128,9 @@ instance showSelection :: Show Selection where show = gShow
 
 derive instance genericField :: Generic Field
 instance showField :: Show Field where show = gShow
+
+derive instance genericAlias :: Generic Alias
+instance showAlias :: Show Alias where show = gShow
 
 derive instance genericFragmentSPread :: Generic FragmentSpread
 instance showFragmentSPread :: Show FragmentSpread where show = gShow

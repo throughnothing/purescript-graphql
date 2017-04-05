@@ -51,7 +51,7 @@ name = S.regex "[_A-Za-z][_0-9A-Za-z]*"
 -- | Document Parser
 
 document :: Parser GA.Document
-document = manyNE $ wrapWhitespace definition
+document = GA.Document <$> manyNE (wrapWhitespace definition)
 
 operationType :: Parser GA.OperationType
 operationType = GA.Query    <$ tok "query"
@@ -96,7 +96,7 @@ field = GA.Field <$> SC.optionMaybe (try alias)
               <*> opt (defer \_ -> selectionSetOpt)
 
 alias :: Parser GA.Alias
-alias = name <* tok ":"
+alias = GA.Alias <$> name <* tok ":"
 
 
 -- | Variables
@@ -105,8 +105,7 @@ variableDefinitions :: Parser GA.VariableDefinitions
 variableDefinitions = parens $ SC.many1 $ wrapWhitespace variableDefinition
 
 variableDefinition :: Parser GA.VariableDefinition
-variableDefinition = GA.VariableDefinition <$> variable
-                                           <*  tok ":"
+variableDefinition = GA.VariableDefinition <$> variable <*  tok ":"
                                            <*> type_
                                            <*> SC.optionMaybe (try defaultValue)
 
@@ -256,7 +255,7 @@ but :: ∀ a. Parser a -> Parser Unit
 but pn = false <$ SC.lookAhead pn <|> pure true >>= switch
   where
     switch false = empty
-    switch true = pure unit
+    switch true  = pure unit
 
 manyNE :: ∀ a. Parser a -> Parser (NonEmpty List a)
 manyNE p = (:|) <$> p <*> (SC.many p)
