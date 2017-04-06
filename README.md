@@ -1,4 +1,5 @@
 # purescript-graphql
+[![Build Status](https://travis-ci.org/throughnothing/purescript-graphql.svg?branch=master)](https://travis-ci.org/throughnothing/purescript-graphql)
 
 A graphQL library written in purescript.
 
@@ -12,7 +13,7 @@ implementation.
 ## Status
 
 ### Server / Infrastructure
-- [ ] Travis CI Builds
+- [X] Travis CI Builds
 - [X] GraphQL AST
 - [X] Document Parser
 - [ ] Document Transformer (AST -> Simplified Version)
