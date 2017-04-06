@@ -172,20 +172,20 @@ value = GA.ValueVariable <$> variable
    <<|> GA.ValueObject   <$> objectValue
     <?> "value error!"
   where
-    floatValue :: Parser GA.FloatValue
+    floatValue :: Parser Number
     floatValue = map (readFloat) $ S.regex "\\d+\\.\\d+"
 
-    intValue :: Parser GA.IntValue
+    intValue :: Parser Int
     intValue = mapInt $ S.regex "\\d+"
       where
         mapInt :: Parser String -> Parser Int
         mapInt ps = map (\s -> floor (readInt 10 s)) ps
 
-    booleanValue :: Parser GA.BooleanValue
+    booleanValue :: Parser Boolean
     booleanValue = true  <$ tok "true"
               <<|> false <$ tok "false"
 
-    stringValue :: Parser GA.StringValue
+    stringValue :: Parser String
     stringValue = quotes $ charToStr (SC.many (S.noneOf ['"']))
 
     enumValue :: Parser GA.Name

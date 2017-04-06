@@ -7,6 +7,7 @@ import Data.NonEmpty (NonEmpty)
 import Data.Show (class Show)
 import GraphQL.Language.AST (Field)
 
+
 type NEList a = NonEmpty List a
 
 data Schema = Schema (NEList Resolver)

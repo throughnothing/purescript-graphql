@@ -60,28 +60,14 @@ type TypeCondition = Name
 
 data Value
   = ValueVariable Variable
-  | ValueInt IntValue
-  | ValueFloat FloatValue
-  | ValueString StringValue
-  | ValueBoolean BooleanValue
+  | ValueInt Int
+  | ValueFloat Number
+  | ValueString String
+  | ValueBoolean Boolean
   | ValueNull
-  | ValueEnum EnumValue
-  | ValueList ListValue
-  | ValueObject ObjectValue
-
-type IntValue = Int
-
-type FloatValue = Number
-
-type StringValue = String
-
-type BooleanValue = Boolean
-
-type EnumValue = Name
-
-type ListValue = List Value
-
-type ObjectValue = List ObjectField
+  | ValueEnum Name
+  | ValueList (List Value)
+  | ValueObject (List ObjectField)
 
 data ObjectField = ObjectField Name Value
 
