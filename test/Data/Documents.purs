@@ -68,8 +68,8 @@ query queryName($foo: ComplexType, $site: Site = MOBILE) {
 
 """
 
-swsimple :: String
-swsimple = """
+swSimple :: String
+swSimple = """
 {
   id,
   name,

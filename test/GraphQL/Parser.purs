@@ -45,7 +45,7 @@ parserSpec = do
       canParse P.operationDefinition D.operationDefinition
 
     it "parses simple documents" do
-      canParse P.document D.swsimple
+      canParse P.document D.swSimple
       canParse P.document D.swSimple2
 
     it "parses KitchenSink with no commetns" do
@@ -56,5 +56,4 @@ parserSpec = do
       -- canParse P.document D.kitchenSink
       pure unit
     pending "comments supported"
-
 

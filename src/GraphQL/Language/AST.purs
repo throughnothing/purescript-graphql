@@ -9,6 +9,8 @@ import Data.Show (class Show)
 -- | TODO: Could this be a symbol?
 type Name = String
 
+type Definitions = NonEmpty List Definition
+
 data Document = Document (NonEmpty List Definition)
 
 data Definition
