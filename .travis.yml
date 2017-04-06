@@ -1,0 +1,11 @@
+language: node_js
+dist: trusty
+sudo: required
+node_js: 6
+install:
+  - npm install
+script:
+  - bower install --production
+  - npm run -s build
+  - bower install
+  - npm -s test
