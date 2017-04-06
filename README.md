@@ -10,27 +10,40 @@ and heavily influenced by  the
 [graphql-haskell](https://github.com/jdnavarro/graphql-haskell/blob/master/Data/GraphQL/AST.hs)
 implementation.
 
+## Goals
+
+The `purescript-graphql` project aims to be a fast, type safe, easy-to-use,
+implementation of the GraphQL spec in Purescript that can provide both a
+server and a client for purescript applications.  At some point, various parts
+of this projcet may be broken out into separate client/server, or other libraries.
+
 ## Status
 
-### Server / Infrastructure
+### General
 - [X] Travis CI Builds
+- [ ] Purescript 0.11 support (when ready)
+- [ ] Release to Pursuit when useable
+
+### Server / Infrastructure
 - [X] GraphQL AST
 - [X] Document Parser
+- [ ] Comment support in Document parser
 - [ ] Document Transformer (AST -> Simplified Version)
 - [ ] Document/AST Printer
+- [ ] Variable Substitution (currently not supported)
 - [ ] Executor (Query)
 - [ ] Executor (Mutation)
 - [ ] Executor (Multiple Queries/Mutations)
 - [ ] Improve type safety of Query -> Result
 - [ ] Documentation
 - [ ] Examples
-- [ ] Release to Pursuit
 
 ### Client / Query Builder
 - [ ] GraphQL Query Builder (type safe)
 - [ ] GraphQL Client (w/Aff), server-side + browser-side support
 
-### Utilities
+### Utilities / Other / Misc
+- [ ] Support Directives?
 - [ ] Schema AST (?)
 - [ ] Schema Parser (?)
 - [ ] Schema/AST Printer (?)
