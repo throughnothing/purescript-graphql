@@ -20,3 +20,5 @@ data Result = Result (Either (NEList String) (NEList String))
 
 derive instance genericResult :: Generic Result
 instance showResult :: Show Result where show = gShow
+
+
