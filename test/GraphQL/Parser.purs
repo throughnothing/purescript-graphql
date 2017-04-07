@@ -6,7 +6,7 @@ import Test.Data.Documents as D
 import Control.Monad.Aff (Aff)
 import Data.Either (isRight)
 import Data.Tuple (Tuple(..))
-import Test.Spec (Spec, describe, it, pending)
+import Test.Spec (Spec, describe, it)
 import Test.Spec.Assertions (shouldEqual)
 import Test.Spec.Runner (RunnerEffects)
 import Text.Parsing.StringParser (runParser, Parser)
@@ -48,12 +48,6 @@ parserSpec = do
       canParse P.document D.swSimple
       canParse P.document D.swSimple2
 
-    it "parses KitchenSink with no commetns" do
-      canParse P.document D.kitchenSinkNoComments
-
     it "parses full KitchenSink example" do
-      -- TODO
-      -- canParse P.document D.kitchenSink
-      pure unit
-    pending "comments supported"
+      canParse P.document D.kitchenSink
 

@@ -22,7 +22,7 @@ import Global (readFloat, readInt)
 import GraphQL.Types (Query(..))
 import Prelude (bind, map, unit, ($), (>>=), pure)
 import Text.Parsing.StringParser (ParseError, Parser, runParser, try)
-import Text.Parsing.StringParser.Combinators ((<?>))
+import Text.Parsing.StringParser.Combinators (manyTill, (<?>))
 
 
 parseDocument :: Query -> Either ParseError GA.Document
@@ -244,15 +244,20 @@ but pn = false <$ SC.lookAhead pn <|> pure true >>= switch
 manyNE :: ∀ a. Parser a -> Parser (NonEmpty List a)
 manyNE p = (:|) <$> p <*> (SC.many p)
 
--- | TODO: Handle Comments
 -- | TODO: Copied whiteSpace function, and added ',` case...prob a better way
 whiteSpace :: Parser String
 whiteSpace = do
   cs <- SC.many (S.satisfy \ c -> c == '\n' || c == '\r' || c == ' ' || c == '\t' || c == ',')
-  pure (foldMap singleton cs)
+  comments <<|> pure (foldMap singleton cs)
+
+-- TODO: This can probably be made a lot more efficient
+comments :: Parser String
+comments = S.char '#'
+        *> map (foldMap singleton) (manyTill S.anyChar (S.string "\n"))
+        <* defer (\_ -> whiteSpace)
 
 charToStr :: Parser (List Char) -> Parser String
-charToStr p = map (foldMap singleton) p
+charToStr p = (map (foldMap singleton) p)
 
 
 tryAlt :: ∀ a. Parser a -> Parser a -> Parser a

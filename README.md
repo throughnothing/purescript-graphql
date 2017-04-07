@@ -27,7 +27,7 @@ of this projcet may be broken out into separate client/server, or other librarie
 ### Server / Infrastructure
 - [X] GraphQL AST
 - [X] Document Parser
-- [ ] Comment support in Document parser
+- [X] Comment support in Document parser
 - [X] Document Transformer (AST -> Simplified Version)
 - [ ] Document/AST Printer
 - [ ] Variable Substitution (currently not supported)

@@ -34,5 +34,5 @@ transformSpec = do
       -- TODO
       -- canTransform $ parse P.document D.kitchenSink
       pure unit
-    pending "variable subs not supported yet"
+    pending "variable subs (and more?) not supported yet"
 
