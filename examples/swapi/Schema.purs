@@ -17,7 +17,7 @@ type Person
   <&> GT.Field' "skinColor" GT.String'
 
 
-  -- | TODO: How to handle these
+  -- TODO: How to handle these
 --   <&> GT.Field' "homeworld" Planet
 --   <&> GT.Field' "species" Species
 --   <&> GT.Field' "starshipConnection" (GT.List Starship)

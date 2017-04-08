@@ -28,11 +28,11 @@ import Text.Parsing.StringParser.Combinators (manyTill, (<?>))
 parseDocument :: Query -> Either ParseError GA.Document
 parseDocument (Query q) = runParser document q
 
--- | Parse a GraphQL `name`, which is `/[_A-Za-z][_0-9A-Za-z]*/`
+-- Parse a GraphQL `name`, which is `/[_A-Za-z][_0-9A-Za-z]*/`
 name :: Parser GA.Name
 name = S.regex "[_A-Za-z][_0-9A-Za-z]*"
 
--- | Document Parser
+-- Document Parser
 
 document :: Parser GA.Document
 document = GA.Document <$> manyNE (wrapWhitespace definition)
@@ -56,7 +56,7 @@ operationDefinition = GA.OperationSelectionSet <$> selectionSet
                                                <*> selectionSet
                   <?> "operationDefinition error"
 
--- | SelectionSet
+-- SelectionSet
 
 selectionSet :: Parser GA.SelectionSet
 selectionSet = braces $ manyNE $ wrapWhitespace (defer \_ -> selection)
@@ -70,7 +70,7 @@ selection = GA.SelectionField          <$> wrapWhitespace (defer \_ -> field)
        <<|> GA.SelectionInlineFragment <$> wrapWhitespace (defer \_ -> inlineFragment)
         <?> "selection error!"
 
--- | Field
+-- Field
 
 field :: Parser GA.Field
 field = GA.Field <$> SC.optionMaybe (try alias)
@@ -83,7 +83,7 @@ alias :: Parser GA.Alias
 alias = GA.Alias <$> name <* tok ":"
 
 
--- | Variables
+-- Variables
 
 variableDefinitions :: Parser GA.VariableDefinitions
 variableDefinitions = parens $ SC.many1 $ wrapWhitespace variableDefinition
@@ -99,7 +99,7 @@ variable = tok "$" *> name
 defaultValue :: Parser GA.DefaultValue
 defaultValue = tok "=" *> value
 
--- | Input Types
+-- Input Types
 
 type_ :: Parser GA.InputType
 type_ = GA.TypeNamed   <$> name <* but (S.string "!")
@@ -112,7 +112,7 @@ nonNullType = GA.NonNullTypeNamed <$> name <* tok "!"
          <<|> GA.NonNullTypeList  <$> brackets (defer \_ -> type_)  <* tok "!"
           <?> "nonNullType error!"
 
--- | Directives
+-- Directives
 
 directives :: Parser GA.Directives
 directives = SC.many directive
@@ -123,7 +123,7 @@ directive = GA.Directive
         <*> name
         <*> opt arguments
 
--- | Arguments
+-- Arguments
 
 arguments :: Parser GA.Arguments
 arguments = parens $ SC.many1 $ wrapWhitespace argument
@@ -131,7 +131,7 @@ arguments = parens $ SC.many1 $ wrapWhitespace argument
 argument :: Parser GA.Argument
 argument = GA.Argument <$> name <* tok ":" <*> value
 
--- | Fragments
+-- Fragments
 
 fragmentSpread :: Parser GA.FragmentSpread
 fragmentSpread = GA.FragmentSpread <$  tok "..."
@@ -158,7 +158,7 @@ fragmentName = but (tok "on") *> name
 typeCondition :: Parser GA.TypeCondition
 typeCondition = tok "on" *> name
 
--- | Values
+-- Values
 
 value :: Parser GA.Value
 value = GA.ValueVariable <$> variable
@@ -201,7 +201,7 @@ objectField :: Parser GA.ObjectField
 objectField = GA.ObjectField <$> name <* tok ":" <*> (defer \_ -> value)
 
 
--- | Internal
+-- Internal
 
 parserCharToStr :: Parser (List Char) -> Parser String
 parserCharToStr c = map (foldMap singleton) c
@@ -212,7 +212,7 @@ tok s = whiteSpace *> (S.string s) <* whiteSpace
 opt :: ∀ a. Monoid a => Parser a -> Parser a
 opt p = p <<|> pure mempty
 
--- | Between Helpers
+-- Between Helpers
 
 parens :: ∀ a. Parser a -> Parser a
 parens = between "(" ")"
@@ -233,7 +233,7 @@ wrapWhitespace :: ∀ a. Parser a -> Parser a
 wrapWhitespace p = whiteSpace *> p <* whiteSpace
 
 
--- | Other Helpers
+-- Other Helpers
 
 but :: ∀ a. Parser a -> Parser Unit
 but pn = false <$ SC.lookAhead pn <|> pure true >>= switch
@@ -244,7 +244,7 @@ but pn = false <$ SC.lookAhead pn <|> pure true >>= switch
 manyNE :: ∀ a. Parser a -> Parser (NonEmpty List a)
 manyNE p = (:|) <$> p <*> (SC.many p)
 
--- | TODO: Copied whiteSpace function, and added ',` case...prob a better way
+-- TODO: Copied whiteSpace function, and added ',` case...prob a better way
 whiteSpace :: Parser String
 whiteSpace = do
   cs <- SC.many (S.satisfy \ c -> c == '\n' || c == '\r' || c == ' ' || c == '\t' || c == ',')

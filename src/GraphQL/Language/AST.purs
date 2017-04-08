@@ -6,7 +6,7 @@ import Data.Maybe (Maybe)
 import Data.NonEmpty (NonEmpty)
 import Data.Show (class Show)
 
--- | TODO: Could this be a symbol?
+-- TODO: Could this be a symbol?
 type Name = String
 
 type Definitions = NonEmpty List Definition
