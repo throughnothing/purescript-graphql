@@ -18,36 +18,21 @@ server and a client for purescript applications.  At some point, various parts
 of this projcet may be broken out into separate client/server, or other libraries.
 
 ## Status
-
-### General
-- [X] Travis CI Builds
-- [ ] Purescript 0.11 support (when ready)
-- [ ] Release to Pursuit when useable
-
-### Server / Infrastructure
 - [X] GraphQL AST
+- [X] Travis CI Builds
 - [X] Document Parser
 - [X] Comment support in Document parser
 - [X] Document Transformer (AST -> Simplified Version)
+- [ ] [Validate](https://facebook.github.io/graphql/#sec-Validation) Schema on Transformation
+- [ ] Executor + Resolvers/Schema (Query)
 - [ ] Document/AST Printer
-- [ ] Variable Substitution (currently not supported)
-- [ ] Executor (Query)
 - [ ] Executor (Mutation)
 - [ ] Executor (Multiple Queries/Mutations)
-- [ ] Improve type safety of Query -> Result
+- [ ] Variable Substitution in Querie
 - [ ] Documentation
 - [ ] Examples
-
-### Client / Query Builder
-- [ ] GraphQL Query Builder (type safe)
-- [ ] GraphQL Client (w/Aff), server-side + browser-side support
-
-### Utilities / Other / Misc
-- [ ] Support Directives?
-- [ ] Schema AST (?)
-- [ ] Schema Parser (?)
-- [ ] Schema/AST Printer (?)
-- [ ] Schema building / gen / introspection utilities
+- [ ] Release to Pursuit when useable
+- [ ] Purescript 0.11 support (when ready)
 
 ## Getting Started
 
