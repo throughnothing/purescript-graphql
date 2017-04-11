@@ -7,8 +7,12 @@ import Data.Maybe (Maybe)
 import Data.NonEmpty (NonEmpty)
 import Data.Show (class Show)
 
-
+-- TODO: Old
 data Document = Document Operations
+
+data QueryDocument
+  = LoneAnonymousQuery Operation
+  | MultipleOperations Operations
 
 type Operations = NonEmpty List Operation
 

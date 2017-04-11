@@ -11,7 +11,7 @@ type Name = String
 
 type Definitions = NonEmpty List Definition
 
-data Document = Document (NonEmpty List Definition)
+data Document = Document Definitions
 
 data Definition
   = DefinitionOperation OperationDefinition
