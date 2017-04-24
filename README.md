@@ -23,6 +23,7 @@ of this projcet may be broken out into separate client/server, or other librarie
 - [X] Document Parser
 - [X] Comment support in Document parser
 - [X] Document Transformer (AST -> Simplified Version)
+- [X] Purescript 0.11 support (when ready)
 - [ ] [Validate](https://facebook.github.io/graphql/#sec-Validation) Schema on Transformation
 - [ ] Executor + Resolvers/Schema (Query)
 - [ ] Document/AST Printer
@@ -32,7 +33,7 @@ of this projcet may be broken out into separate client/server, or other librarie
 - [ ] Documentation
 - [ ] Examples
 - [ ] Release to Pursuit when useable
-- [X] Purescript 0.11 support (when ready)
+- [ ] [Introspection](https://facebook.github.io/graphql/#sec-Introspection) System
 
 ## Getting Started
 

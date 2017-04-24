@@ -1,20 +1,23 @@
-module SWAPI.Schema
-  ( Person
-  )where
+module SWAPI.Schema where
 
-import GraphQL.Types (type (<&>))
-import GraphQL.Types as GT
+import GraphQL.Schema as S
+
+data ArgAnd a b = Args a b
+infixr 8 type ArgAnd as :>
+
+data And a b = And a b
+infixl 8 type And as <&>
 
 type Person
-  =   GT.Field' "id" GT.String'
-  <&> GT.Field' "name" GT.String'
-  <&> GT.Field' "birthYear" GT.String'
-  <&> GT.Field' "eyeColor" GT.String'
-  <&> GT.Field' "gender" GT.String'
-  <&> GT.Field' "hairColor" GT.String'
-  <&> GT.Field' "height" GT.Int'
-  <&> GT.Field' "mass" GT.Int'
-  <&> GT.Field' "skinColor" GT.String'
+  =   S.Field' "id" S.String'
+  <&> S.Field' "name" S.String'
+  <&> S.Field' "birthYear" S.String'
+  <&> S.Field' "eyeColor" S.String'
+  <&> S.Field' "gender" S.String'
+  <&> S.Field' "hairColor" S.String'
+  <&> S.Field' "height" S.Int'
+  <&> S.Field' "mass" S.Int'
+  <&> S.Field' "skinColor" S.String'
 
 
   -- TODO: How to handle these
