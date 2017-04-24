@@ -32,7 +32,7 @@ of this projcet may be broken out into separate client/server, or other librarie
 - [ ] Documentation
 - [ ] Examples
 - [ ] Release to Pursuit when useable
-- [ ] Purescript 0.11 support (when ready)
+- [X] Purescript 0.11 support (when ready)
 
 ## Getting Started
 
